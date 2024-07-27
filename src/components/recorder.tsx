@@ -5,13 +5,17 @@ import { saveAudioBlob, getAllAudioBlobs, deleteAudioBlob } from '../util/indexe
 
 const Recorder = () => {
     const [isRecording, setIsRecording] = useState(false);
-    const [audioUrls, setAudioUrls] = useState([]);
-    const mediaRecorderRef = useRef(null);
-    const audioChunksRef = useRef([]);
-    const audioContextRef = useRef(null);
-    const analyserRef = useRef(null);
-    const canvasRef = useRef(null);
-    const mediaStreamRef = useRef(null);
+    const [audioUrls, setAudioUrls] = useState<{
+        id: any;
+        blob: any;
+        url: string;
+    }[]>([]);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioChunksRef = useRef<Blob[]>([]);
+    const audioContextRef = useRef<AudioContext | null>(null);
+    const analyserRef = useRef<AnalyserNode | null>(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const mediaStreamRef = useRef<MediaStream | null>(null);
 
     useEffect(() => {
         const fetchAudioBlobs = async () => {
@@ -31,6 +35,9 @@ const Recorder = () => {
 
         const canvas = canvasRef.current;
         const canvasCtx = canvas.getContext('2d');
+
+        if (!canvasCtx) return;
+
         const analyser = analyserRef.current;
         const bufferLength = analyser.fftSize;
         const dataArray = new Uint8Array(bufferLength);
@@ -76,6 +83,7 @@ const Recorder = () => {
     const handleStartRecording = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaStreamRef.current = stream;
+        // @ts-ignore
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
         analyserRef.current = audioContextRef.current.createAnalyser();
 
@@ -128,20 +136,27 @@ const Recorder = () => {
         setIsRecording(false);
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id: number) => {
         await deleteAudioBlob(id);
         setAudioUrls(audioUrls.filter(audio => audio.id !== id));
     };
 
-    const handleDrawWaveform = async (blob, canvas) => {
+    const handleDrawWaveform = async (blob: Blob, canvas: HTMLCanvasElement | null) => {
+
+        if (!canvas) return;
+
+        // @ts-ignore
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const arrayBuffer = await blob.arrayBuffer();
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
         drawWaveform(audioBuffer, canvas);
     };
 
-    const drawWaveform = (audioBuffer, canvas) => {
+    const drawWaveform = (audioBuffer: AudioBuffer, canvas: HTMLCanvasElement) => {
         const canvasCtx = canvas.getContext('2d');
+
+        if (!canvasCtx) return;
+
         const { width, height } = canvas;
         const data = audioBuffer.getChannelData(0); // Get the first channel data
         const step = Math.ceil(data.length / width);
@@ -155,7 +170,9 @@ const Recorder = () => {
         canvasCtx.beginPath();
 
         for (let i = 0; i < width; i++) {
+            // @ts-ignore
             const min = Math.min(...data.slice(i * step, (i + 1) * step));
+            // @ts-ignore
             const max = Math.max(...data.slice(i * step, (i + 1) * step));
             canvasCtx.moveTo(i, (1 + min) * amp);
             canvasCtx.lineTo(i, (1 + max) * amp);
@@ -164,8 +181,14 @@ const Recorder = () => {
         canvasCtx.stroke();
     };
 
-    const drawPlaybackPosition = (audio, canvas) => {
+    const drawPlaybackPosition = (audio: any, canvas: HTMLCanvasElement | null) => {
+
+        if (!canvas) return;
+
         const canvasCtx = canvas.getContext('2d');
+
+        if (!canvasCtx) return;
+
         const { width, height } = canvas;
 
         const updatePosition = () => {
