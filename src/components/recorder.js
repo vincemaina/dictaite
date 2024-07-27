@@ -1,8 +1,8 @@
 'use client';
 
-// components/Recorder.js
 import React, { useState, useRef, useEffect } from 'react';
 import { saveAudioBlob, getAllAudioBlobs, deleteAudioBlob } from '../util/indexedDB';
+import { drawWaveform } from '../util/draw-waveform';
 
 const Recorder = () => {
     const [isRecording, setIsRecording] = useState(false);
@@ -19,6 +19,7 @@ const Recorder = () => {
             const blobs = await getAllAudioBlobs();
             const urls = blobs.map(({ id, blob }) => ({
                 id,
+                blob,
                 url: URL.createObjectURL(blob),
             }));
             setAudioUrls(urls);
@@ -36,6 +37,8 @@ const Recorder = () => {
         const dataArray = new Uint8Array(bufferLength);
 
         const draw = () => {
+            if (!isRecording) return;
+
             requestAnimationFrame(draw);
 
             analyser.getByteTimeDomainData(dataArray);
@@ -96,7 +99,7 @@ const Recorder = () => {
             if (audioBlob.size > 0) {
                 const id = await saveAudioBlob(audioBlob);
                 const url = URL.createObjectURL(audioBlob);
-                setAudioUrls(prevUrls => [...prevUrls, { id, url }]);
+                setAudioUrls(prevUrls => [...prevUrls, { id, url, blob: audioBlob }]);
             } else {
                 console.error('Audio blob size is 0.');
             }
@@ -111,21 +114,31 @@ const Recorder = () => {
     const handleStopRecording = () => {
         if (mediaRecorderRef.current) {
             mediaRecorderRef.current.stop();
-            setIsRecording(false);
         } else {
             console.error('MediaRecorder is not initialized.');
         }
+
         if (audioContextRef.current) {
             audioContextRef.current.close();
         }
+
         if (mediaStreamRef.current) {
             mediaStreamRef.current.getTracks().forEach(track => track.stop());
         }
+
+        setIsRecording(false);
     };
 
     const handleDelete = async (id) => {
         await deleteAudioBlob(id);
         setAudioUrls(audioUrls.filter(audio => audio.id !== id));
+    };
+
+    const handleDrawWaveform = async (blob, canvas) => {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const arrayBuffer = await blob.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        drawWaveform(audioBuffer, canvas);
     };
 
     return (
@@ -135,10 +148,11 @@ const Recorder = () => {
             </button>
             <canvas ref={canvasRef} width="600" height="100" />
             <ul>
-                {audioUrls.map(({ id, url }) => (
+                {audioUrls.map(({ id, url, blob }) => (
                     <li key={id}>
                         <audio src={url} controls />
                         <button onClick={() => handleDelete(id)}>Delete</button>
+                        <button onClick={() => handleDrawWaveform(blob, canvasRef.current)}>Draw Waveform</button>
                     </li>
                 ))}
             </ul>
