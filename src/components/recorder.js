@@ -26,22 +26,35 @@ const Recorder = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorderRef.current = new MediaRecorder(stream);
         mediaRecorderRef.current.ondataavailable = event => {
-            audioChunksRef.current.push(event.data);
+            if (event.data && event.data.size > 0) {
+                audioChunksRef.current.push(event.data);
+            } else {
+                console.error('Audio data is empty.');
+            }
         };
         mediaRecorderRef.current.onstop = async () => {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-            const id = await saveAudioBlob(audioBlob);
-            const url = URL.createObjectURL(audioBlob);
-            setAudioUrls(prevUrls => [...prevUrls, { id, url }]);
+            if (audioBlob.size > 0) {
+                const id = await saveAudioBlob(audioBlob);
+                const url = URL.createObjectURL(audioBlob);
+                setAudioUrls(prevUrls => [...prevUrls, { id, url }]);
+            } else {
+                console.error('Audio blob size is 0.');
+            }
             audioChunksRef.current = [];
         };
+
         mediaRecorderRef.current.start();
         setIsRecording(true);
     };
 
     const handleStopRecording = () => {
-        mediaRecorderRef.current.stop();
-        setIsRecording(false);
+        if (mediaRecorderRef.current) {
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
+        } else {
+            console.error('MediaRecorder is not initialized.');
+        }
     };
 
     const handleDelete = async (id) => {
