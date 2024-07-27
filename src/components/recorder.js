@@ -12,6 +12,7 @@ const Recorder = () => {
     const audioContextRef = useRef(null);
     const analyserRef = useRef(null);
     const canvasRef = useRef(null);
+    const mediaStreamRef = useRef(null);
 
     useEffect(() => {
         const fetchAudioBlobs = async () => {
@@ -72,6 +73,7 @@ const Recorder = () => {
 
     const handleStartRecording = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaStreamRef.current = stream;
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
         analyserRef.current = audioContextRef.current.createAnalyser();
 
@@ -115,6 +117,9 @@ const Recorder = () => {
         }
         if (audioContextRef.current) {
             audioContextRef.current.close();
+        }
+        if (mediaStreamRef.current) {
+            mediaStreamRef.current.getTracks().forEach(track => track.stop());
         }
     };
 
