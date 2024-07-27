@@ -2,6 +2,7 @@
 
 // components/Recorder.js
 import React, { useState, useRef, useEffect } from 'react';
+import { saveAudioBlob, getAllAudioBlobs, deleteAudioBlob } from '../util/indexedDB';
 
 const Recorder = () => {
     const [isRecording, setIsRecording] = useState(false);
@@ -10,8 +11,15 @@ const Recorder = () => {
     const audioChunksRef = useRef([]);
 
     useEffect(() => {
-        const storedAudioUrls = JSON.parse(localStorage.getItem('audioUrls')) || [];
-        setAudioUrls(storedAudioUrls);
+        const fetchAudioBlobs = async () => {
+            const blobs = await getAllAudioBlobs();
+            const urls = blobs.map(({ id, blob }) => ({
+                id,
+                url: URL.createObjectURL(blob),
+            }));
+            setAudioUrls(urls);
+        };
+        fetchAudioBlobs();
     }, []);
 
     const handleStartRecording = async () => {
@@ -20,12 +28,11 @@ const Recorder = () => {
         mediaRecorderRef.current.ondataavailable = event => {
             audioChunksRef.current.push(event.data);
         };
-        mediaRecorderRef.current.onstop = () => {
+        mediaRecorderRef.current.onstop = async () => {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+            const id = await saveAudioBlob(audioBlob);
             const url = URL.createObjectURL(audioBlob);
-            const newAudioUrls = [...audioUrls, url];
-            setAudioUrls(newAudioUrls);
-            localStorage.setItem('audioUrls', JSON.stringify(newAudioUrls));
+            setAudioUrls(prevUrls => [...prevUrls, { id, url }]);
             audioChunksRef.current = [];
         };
         mediaRecorderRef.current.start();
@@ -37,10 +44,9 @@ const Recorder = () => {
         setIsRecording(false);
     };
 
-    const handleDelete = (index) => {
-        const newAudioUrls = audioUrls.filter((_, i) => i !== index);
-        setAudioUrls(newAudioUrls);
-        localStorage.setItem('audioUrls', JSON.stringify(newAudioUrls));
+    const handleDelete = async (id) => {
+        await deleteAudioBlob(id);
+        setAudioUrls(audioUrls.filter(audio => audio.id !== id));
     };
 
     return (
@@ -49,10 +55,10 @@ const Recorder = () => {
                 {isRecording ? 'Stop Recording' : 'Start Recording'}
             </button>
             <ul>
-                {audioUrls.map((url, index) => (
-                    <li key={index}>
+                {audioUrls.map(({ id, url }) => (
+                    <li key={id}>
                         <audio src={url} controls />
-                        <button onClick={() => handleDelete(index)}>Delete</button>
+                        <button onClick={() => handleDelete(id)}>Delete</button>
                     </li>
                 ))}
             </ul>
