@@ -1,3 +1,5 @@
+'use client';
+
 // components/Recorder.js
 import React, { useState, useRef } from 'react';
 
