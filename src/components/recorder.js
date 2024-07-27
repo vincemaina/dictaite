@@ -37,6 +37,12 @@ const Recorder = () => {
         setIsRecording(false);
     };
 
+    const handleDelete = (index) => {
+        const newAudioUrls = audioUrls.filter((_, i) => i !== index);
+        setAudioUrls(newAudioUrls);
+        localStorage.setItem('audioUrls', JSON.stringify(newAudioUrls));
+    };
+
     return (
         <div>
             <button onClick={isRecording ? handleStopRecording : handleStartRecording}>
@@ -46,6 +52,7 @@ const Recorder = () => {
                 {audioUrls.map((url, index) => (
                     <li key={index}>
                         <audio src={url} controls />
+                        <button onClick={() => handleDelete(index)}>Delete</button>
                     </li>
                 ))}
             </ul>
