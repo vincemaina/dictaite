@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { saveAudioBlob, getAllAudioBlobs, deleteAudioBlob } from '../util/indexedDB';
+import Waveform from './waveform';
 
 const Recorder = () => {
     const [isRecording, setIsRecording] = useState(false);
@@ -141,83 +142,6 @@ const Recorder = () => {
         setAudioUrls(audioUrls.filter(audio => audio.id !== id));
     };
 
-    const handleDrawWaveform = async (blob: Blob, canvas: HTMLCanvasElement | null) => {
-
-        if (!canvas) return;
-
-        // @ts-ignore
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const arrayBuffer = await blob.arrayBuffer();
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        drawWaveform(audioBuffer, canvas);
-    };
-
-    const drawWaveform = (audioBuffer: AudioBuffer, canvas: HTMLCanvasElement) => {
-        const canvasCtx = canvas.getContext('2d');
-
-        if (!canvasCtx) return;
-
-        const { width, height } = canvas;
-        const data = audioBuffer.getChannelData(0); // Get the first channel data
-        const step = Math.ceil(data.length / width);
-        const amp = height / 2;
-
-        canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-        canvasCtx.fillRect(0, 0, width, height);
-
-        canvasCtx.lineWidth = 2;
-        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
-        canvasCtx.beginPath();
-
-        for (let i = 0; i < width; i++) {
-            // @ts-ignore
-            const min = Math.min(...data.slice(i * step, (i + 1) * step));
-            // @ts-ignore
-            const max = Math.max(...data.slice(i * step, (i + 1) * step));
-            canvasCtx.moveTo(i, (1 + min) * amp);
-            canvasCtx.lineTo(i, (1 + max) * amp);
-        }
-
-        canvasCtx.stroke();
-    };
-
-    const drawPlaybackPosition = (audio: any, canvas: HTMLCanvasElement | null) => {
-
-        if (!canvas) return;
-
-        const canvasCtx = canvas.getContext('2d');
-
-        if (!canvasCtx) return;
-
-        const { width, height } = canvas;
-
-        const updatePosition = () => {
-            if (audio.paused || audio.ended) return;
-
-            requestAnimationFrame(updatePosition);
-
-            const currentTime = audio.currentTime;
-            const duration = audio.duration;
-            const x = (currentTime / duration) * width;
-
-            // Clear the previous frame
-            canvasCtx.clearRect(0, 0, width, height);
-
-            // Redraw the waveform
-            handleDrawWaveform(audio.blob, canvas);
-
-            // Draw the vertical line
-            canvasCtx.strokeStyle = 'red';
-            canvasCtx.lineWidth = 2;
-            canvasCtx.beginPath();
-            canvasCtx.moveTo(x, 0);
-            canvasCtx.lineTo(x, height);
-            canvasCtx.stroke();
-        };
-
-        updatePosition();
-    };
-
     return (
         <div>
             <button onClick={isRecording ? handleStopRecording : handleStartRecording}>
@@ -227,13 +151,9 @@ const Recorder = () => {
             <ul>
                 {audioUrls.map(({ id, url, blob }) => (
                     <li key={id}>
-                        <audio
-                            src={url}
-                            controls
-                            onPlay={e => drawPlaybackPosition(e.target, canvasRef.current)}
-                        />
                         <button onClick={() => handleDelete(id)}>Delete</button>
-                        <button onClick={() => handleDrawWaveform(blob, canvasRef.current)}>Draw Waveform</button>
+                        {/* <button onClick={() => handleDrawWaveform(blob, canvasRef.current)}>Draw Waveform</button> */}
+                        <Waveform blob={blob} url={url}/>
                     </li>
                 ))}
             </ul>
