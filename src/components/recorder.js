@@ -1,13 +1,18 @@
 'use client';
 
 // components/Recorder.js
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const Recorder = () => {
     const [isRecording, setIsRecording] = useState(false);
-    const [audioUrl, setAudioUrl] = useState(null);
+    const [audioUrls, setAudioUrls] = useState([]);
     const mediaRecorderRef = useRef(null);
     const audioChunksRef = useRef([]);
+
+    useEffect(() => {
+        const storedAudioUrls = JSON.parse(localStorage.getItem('audioUrls')) || [];
+        setAudioUrls(storedAudioUrls);
+    }, []);
 
     const handleStartRecording = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -18,8 +23,9 @@ const Recorder = () => {
         mediaRecorderRef.current.onstop = () => {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
             const url = URL.createObjectURL(audioBlob);
-            setAudioUrl(url);
-            localStorage.setItem('audioBlob', audioBlob);
+            const newAudioUrls = [...audioUrls, url];
+            setAudioUrls(newAudioUrls);
+            localStorage.setItem('audioUrls', JSON.stringify(newAudioUrls));
             audioChunksRef.current = [];
         };
         mediaRecorderRef.current.start();
@@ -36,7 +42,13 @@ const Recorder = () => {
             <button onClick={isRecording ? handleStopRecording : handleStartRecording}>
                 {isRecording ? 'Stop Recording' : 'Start Recording'}
             </button>
-            {audioUrl && <audio src={audioUrl} controls />}
+            <ul>
+                {audioUrls.map((url, index) => (
+                    <li key={index}>
+                        <audio src={url} controls />
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };
