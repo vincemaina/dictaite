@@ -8,7 +8,7 @@ def hello_world():
 
 
 import torch
-from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, AutoModelForTokenClassification, AutoTokenizer
+from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 from pydub import AudioSegment
 import numpy as np
 
@@ -41,28 +41,6 @@ def transcribe_audio(audio_array):
         print(f"Error transcribing audio: {e}")
         return None
 
-def restore_punctuation(text):
-    tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-    model = AutoModelForTokenClassification.from_pretrained("bert-base-uncased")
-
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-    with torch.no_grad():
-        outputs = model(**inputs).logits
-    
-    predictions = torch.argmax(outputs, dim=-1)
-    tokens = tokenizer.convert_ids_to_tokens(inputs["input_ids"][0])
-    predicted_labels = [model.config.id2label[pred.item()] for pred in predictions[0]]
-    
-    punctuated_text = ""
-    for token, label in zip(tokens, predicted_labels):
-        if token.startswith("##"):
-            punctuated_text += token[2:]
-        else:
-            punctuated_text += " " + token
-        if label != "O":
-            punctuated_text += label.replace(" ", "")
-    
-    return punctuated_text
 
 @app.route("/api/transcribe", methods=["POST"])
 def transcribe():
@@ -81,5 +59,4 @@ def transcribe():
     if transcription is None:
         return jsonify({"error": "Error transcribing audio file"}), 500
 
-    punctuated_transcription = restore_punctuation(transcription)
-    return jsonify({"transcription": punctuated_transcription})
+    return jsonify({"transcription": transcription})
