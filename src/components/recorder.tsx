@@ -44,8 +44,6 @@ const Recorder = () => {
         const dataArray = new Uint8Array(bufferLength);
 
         const draw = () => {
-            if (!isRecording) return;
-
             requestAnimationFrame(draw);
 
             analyser.getByteTimeDomainData(dataArray);
@@ -144,15 +142,14 @@ const Recorder = () => {
 
     return (
         <div>
-            <button onClick={isRecording ? handleStopRecording : handleStartRecording}>
-                {isRecording ? 'Stop Recording' : 'Start Recording'}
+            <button onClick={isRecording ? handleStopRecording : handleStartRecording} className='bg-red-500 text-white px-3 py-1 rounded-xl'>
+                {isRecording ? 'Stop' : 'Record'}
             </button>
             <canvas ref={canvasRef} width="600" height="100" />
             <ul>
                 {audioUrls.map(({ id, url, blob }) => (
                     <li key={id}>
                         <button onClick={() => handleDelete(id)}>Delete</button>
-                        {/* <button onClick={() => handleDrawWaveform(blob, canvasRef.current)}>Draw Waveform</button> */}
                         <Waveform blob={blob} url={url}/>
                     </li>
                 ))}
