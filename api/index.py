@@ -12,34 +12,34 @@ from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 from pydub import AudioSegment
 import numpy as np
 
-def load_audio(file_path):
-    # Load audio file
-    audio = AudioSegment.from_file(file_path)
-    
-    # Ensure the audio is in the required format (16kHz, mono)
-    audio = audio.set_frame_rate(16000).set_channels(1)
-    
-    # Convert to numpy array
-    audio_array = np.array(audio.get_array_of_samples())
-    
-    return audio_array
+def load_audio(file):
+    try:
+        audio = AudioSegment.from_file(file)
+        audio = audio.set_frame_rate(16000).set_channels(1)
+        audio_array = np.array(audio.get_array_of_samples(), dtype=np.float32)  # Ensure the dtype is float32
+        return audio_array
+    except Exception as e:
+        print(f"Error loading audio file: {e}")
+        return None
 
 def transcribe_audio(audio_array):
-    # Load the pretrained model and processor
-    processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
-    model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
-
-    # Process the audio
-    inputs = processor(audio_array, sampling_rate=16000, return_tensors="pt", padding=True)
-    
-    # Run inference
-    with torch.no_grad():
-        logits = model(**inputs).logits
-
-    # Decode the predicted transcription
-    predicted_ids = torch.argmax(logits, dim=-1)
-    transcription = processor.batch_decode(predicted_ids)
-    return transcription[0]
+    try:
+        processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
+        model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
+        
+        # Convert numpy array to torch tensor with the correct data type
+        inputs = processor(audio_array, sampling_rate=16000, return_tensors="pt", padding=True)
+        inputs["input_values"] = inputs["input_values"].type(torch.FloatTensor)
+        
+        with torch.no_grad():
+            logits = model(**inputs).logits
+        
+        predicted_ids = torch.argmax(logits, dim=-1)
+        transcription = processor.batch_decode(predicted_ids)
+        return transcription[0]
+    except Exception as e:
+        print(f"Error transcribing audio: {e}")
+        return None
 
 
 @app.route("/api/transcribe", methods=["POST"])
