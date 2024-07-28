@@ -4,14 +4,18 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const AudioUploader = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [transcription, setTranscription] = useState('');
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: any) => {
     setSelectedFile(event.target.files[0]);
   };
 
   const handleFileUpload = async () => {
+    if (!selectedFile) {
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', selectedFile);
 
