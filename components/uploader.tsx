@@ -16,7 +16,7 @@ const AudioUploader = () => {
     formData.append('file', selectedFile);
 
     try {
-      const response = await axios.post('http://localhost:5000/transcribe', formData, {
+      const response = await axios.post('/api/transcribe', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

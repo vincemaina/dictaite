@@ -42,7 +42,7 @@ def transcribe_audio(audio_array):
     return transcription[0]
 
 
-@app.route("/transcribe", methods=["POST"])
+@app.route("/api/transcribe", methods=["POST"])
 def transcribe():
     if "file" not in request.files:
         return jsonify({"error": "No file part"}), 400
