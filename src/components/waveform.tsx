@@ -96,8 +96,7 @@ export default function Waveform(props: WaveformProps) {
                 src={props.url}
                 controls
                 ref={audioRef}
-                onPlay={e => drawPlaybackPosition(e.target, canvasRef.current)}
-                className="hidden"
+                // onPlay={e => drawPlaybackPosition(e.target, canvasRef.current)}
             />
         </div>
     );
