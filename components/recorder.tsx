@@ -3,6 +3,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { saveAudioBlob, getAllAudioBlobs, deleteAudioBlob } from '../util/indexedDB';
 import Waveform from './waveform';
+import { FFmpeg } from '@ffmpeg/ffmpeg';
+import { fetchFile } from '@ffmpeg/util';
+
+const ffmpeg = new FFmpeg()
 
 export default function Recorder() {
     
@@ -105,7 +109,8 @@ export default function Recorder() {
         mediaRecorderRef.current.onstop = async () => {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
             if (audioBlob.size > 0) {
-                const id = await saveAudioBlob(audioBlob);
+                const compressedAudioBlob = await compressAudio(audioBlob);
+                const id = await saveAudioBlob(compressedAudioBlob);
                 const url = URL.createObjectURL(audioBlob);
                 setAudioUrls(prevUrls => [...prevUrls, { id, url, blob: audioBlob }]);
             } else {
@@ -141,6 +146,19 @@ export default function Recorder() {
         await deleteAudioBlob(id);
         setAudioUrls(audioUrls.filter(audio => audio.id !== id));
     }
+
+    const compressAudio = async (blob: Blob) => {    
+        if (!ffmpeg.loaded) {
+          await ffmpeg.load();
+        }
+    
+        await ffmpeg.writeFile('input.wav', await fetchFile(blob));
+        await ffmpeg.exec(['-i', 'input.wav', '-b:a', '128k', 'output.mp3']);
+    
+        const data = await ffmpeg.readFile('output.mp3');
+    
+        return new Blob([data], { type: 'audio/mp3' });
+      };
 
     return (
         <div>
