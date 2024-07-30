@@ -4,7 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { saveAudioBlob, getAllAudioBlobs, deleteAudioBlob } from '../util/indexedDB';
 import Waveform from './waveform';
 
-const Recorder = () => {
+export default function Recorder() {
+    
     const [isRecording, setIsRecording] = useState(false);
     const [audioUrls, setAudioUrls] = useState<{
         id: any;
@@ -19,7 +20,7 @@ const Recorder = () => {
     const mediaStreamRef = useRef<MediaStream | null>(null);
 
     useEffect(() => {
-        const fetchAudioBlobs = async () => {
+        async function fetchAudioBlobs() {
             const blobs = await getAllAudioBlobs();
             const urls = blobs.map(({ id, blob }) => ({
                 id,
@@ -27,11 +28,11 @@ const Recorder = () => {
                 url: URL.createObjectURL(blob),
             }));
             setAudioUrls(urls);
-        };
+        }
         fetchAudioBlobs();
     }, []);
 
-    const drawVisualizer = () => {
+    function drawVisualizer() {
         if (!analyserRef.current || !canvasRef.current) return;
 
         const canvas = canvasRef.current;
@@ -77,9 +78,10 @@ const Recorder = () => {
         };
 
         draw();
-    };
+    }
 
-    const handleStartRecording = async () => {
+    async function handleStartRecording() {
+
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaStreamRef.current = stream;
         // @ts-ignore
@@ -115,9 +117,9 @@ const Recorder = () => {
         mediaRecorderRef.current.start();
         setIsRecording(true);
         drawVisualizer();
-    };
+    }
 
-    const handleStopRecording = () => {
+    function handleStopRecording() {
         if (mediaRecorderRef.current) {
             mediaRecorderRef.current.stop();
         } else {
@@ -133,12 +135,12 @@ const Recorder = () => {
         }
 
         setIsRecording(false);
-    };
+    }
 
-    const handleDelete = async (id: number) => {
+    async function handleDelete(id: number) {
         await deleteAudioBlob(id);
         setAudioUrls(audioUrls.filter(audio => audio.id !== id));
-    };
+    }
 
     return (
         <div>
@@ -157,5 +159,3 @@ const Recorder = () => {
         </div>
     );
 };
-
-export default Recorder;
