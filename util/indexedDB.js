@@ -10,18 +10,18 @@ const dbPromise = openDB('voice-notes', 1, {
     },
 });
 
-export const saveAudioBlob = async (blob) => {
+export async function saveAudioBlob(blob) {
     const db = await dbPromise;
     const id = await db.add('audio', { blob });
     return id;
-};
+}
 
-export const getAllAudioBlobs = async () => {
+export async function getAllAudioBlobs() {
     const db = await dbPromise;
     return await db.getAll('audio');
-};
+}
 
-export const deleteAudioBlob = async (id) => {
+export async function deleteAudioBlob(id) {
     const db = await dbPromise;
     return await db.delete('audio', id);
-};
+}
