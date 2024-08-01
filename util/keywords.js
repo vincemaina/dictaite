@@ -42,3 +42,5 @@ Okay, I think that’s it for now. I’ll need to start sketching out some wiref
 `
 
 console.log(get_keywords(text, 10));
+
+module.exports = get_keywords;
