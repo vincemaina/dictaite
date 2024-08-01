@@ -16,9 +16,11 @@
     "axios": "^1.7.2",
     "concurrently": "^8.2.2",
     "idb": "^8.0.0",
+    "natural": "^7.1.0",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "stopword": "^3.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
