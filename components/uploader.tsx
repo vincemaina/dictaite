@@ -25,7 +25,7 @@ const AudioUploader = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setTranscription(response.data.transcription);
+      setTranscription(response.data.text);
     } catch (error) {
       console.error('Error uploading file:', error);
     }

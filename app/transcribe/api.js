@@ -20,9 +20,18 @@ async function query(data) {
 	return result;
 }
 
-module.exports = query;
+/**
+ * Call API.
+ * 
+ * @param {Blob} blob 
+ */
+async function callApi(blob) {
+    // Convert Blob to ArrayBuffer.
+    const arrayBuffer = await blob.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+    const response = await query(uint8Array);
+    console.log(response);
+    return response;
+}
 
-// const data = fs.readFileSync("app/transcribe/sample.mp3");
-// query(data).then((response) => {
-// 	console.log(JSON.stringify(response));
-// });
+module.exports = callApi;
