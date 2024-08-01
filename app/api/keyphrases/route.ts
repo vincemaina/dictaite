@@ -28,10 +28,13 @@ export async function POST(req: Request) {
 
         console.log(result);
 
+        result = result.map((element: any) => element.word);
+
         return new Response(JSON.stringify(result), {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error: any) {
+        console.error(error);
         return new Response(error.message, { status: 500 });
     }
 }
