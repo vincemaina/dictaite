@@ -10,9 +10,9 @@ const dbPromise = openDB('voice-notes', 1, {
     },
 });
 
-export async function saveAudioBlob(blob) {
+export async function saveAudioBlob(blob, transcription, keyPhrases, keywords) {
     const db = await dbPromise;
-    const id = await db.add('audio', { blob });
+    const id = await db.add('audio', { blob, transcription, keyPhrases, keywords });
     return id;
 }
 
