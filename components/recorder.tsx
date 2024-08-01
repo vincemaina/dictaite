@@ -14,6 +14,7 @@ export default function Recorder() {
     const [audioUrls, setAudioUrls] = useState<{
         id: any;
         blob: any;
+        transcription?: string | undefined;
         url: string;
     }[]>([]);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -26,9 +27,10 @@ export default function Recorder() {
     useEffect(() => {
         async function fetchAudioBlobs() {
             const blobs = await getAllAudioBlobs();
-            const urls = blobs.map(({ id, blob }) => ({
+            const urls = blobs.map(({ id, blob, transcription }) => ({
                 id,
                 blob,
+                transcription,
                 url: URL.createObjectURL(blob),
             }));
             setAudioUrls(urls);
@@ -110,7 +112,22 @@ export default function Recorder() {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
             if (audioBlob.size > 0) {
                 const compressedAudioBlob = await compressAudio(audioBlob);
-                const id = await saveAudioBlob(compressedAudioBlob);
+                
+                const transcription = await fetch('/api/transcribe', {
+                    method: 'POST',
+                    body: compressedAudioBlob,
+                }).then(res => res.json())
+                    .then(data => data.text);
+
+                const keyphrases = await fetch('/api/keyphrases', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: transcription }),
+                }).then(res => res.json());
+                
+                const id = await saveAudioBlob(compressedAudioBlob, transcription, keyphrases);
                 const url = URL.createObjectURL(audioBlob);
                 setAudioUrls(prevUrls => [...prevUrls, { id, url, blob: audioBlob }]);
             } else {
@@ -167,8 +184,9 @@ export default function Recorder() {
             </button>
             <canvas ref={canvasRef} width="600" height="100" />
             <ul>
-                {audioUrls.map(({ id, url, blob }) => (
-                    <li key={id}>
+                {audioUrls.map(({ id, url, blob, transcription }) => (
+                    <li key={id} className='mt-10'>
+                        <p>{transcription}</p>
                         <button onClick={() => handleDelete(id)}>Delete</button>
                         <Waveform blob={blob} url={url}/>
                     </li>
