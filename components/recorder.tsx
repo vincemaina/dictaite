@@ -112,12 +112,14 @@ export default function Recorder() {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
             if (audioBlob.size > 0) {
                 const compressedAudioBlob = await compressAudio(audioBlob);
+
+                const formData = new FormData();
+                formData.append('audio', compressedAudioBlob, 'audio.mp3');
                 
-                const transcription = await fetch('/api/transcribe', {
+                const transcription: OpenAITranscriptionObject = await fetch('/api/transcribe', {
                     method: 'POST',
-                    body: compressedAudioBlob,
-                }).then(res => res.json())
-                    .then(data => data.text);
+                    body: formData,
+                }).then(res => res.json());
 
                 const keyphrases = await fetch('/api/keyphrases', {
                     method: 'POST',
