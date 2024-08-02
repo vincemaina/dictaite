@@ -88,7 +88,7 @@ export default function Waveform(props: WaveformProps) {
     }, [props.blob]);
 
     return (
-        <div className="bg-white p-2 px-5 rounded-full" title="Voice note waveform"
+        <div title="Voice note waveform"
             onClick={() => audioRef.current?.play()}
         >
             <canvas ref={canvasRef} width="600" height="50" />
