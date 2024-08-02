@@ -189,22 +189,26 @@ export default function Recorder() {
       };
 
     return (
-        <div>
+        <div className='max-w-5xl'>
             <button onClick={isRecording ? handleStopRecording : handleStartRecording} className='bg-red-500 text-white px-3 py-1 rounded-xl'>
                 {isRecording ? 'Stop' : 'Record'}
             </button>
             <canvas ref={canvasRef} width="600" height="100" />
             <ul>
                 {audioUrls.map((blob) => (
-                    <li key={blob.id} className='mt-10'>
+                    <li key={blob.id} className='mt-10 bg-white p-7 rounded-lg shadow text-center text-balance'>
+                        <Waveform blob={blob.blob} url={blob.url}/>
                         <p>{blob.transcription?.text}</p>
                         
-                        <div className='flex flex-wrap gap-3'>{blob.keyPhrases?.map(phrase => (
+                        <div className='flex flex-wrap gap-3 justify-center my-5'>{blob.keyPhrases?.map(phrase => (
                             <Label key={phrase}>{phrase}</Label>
                         ))}</div>
                         
-                        <button onClick={() => handleDelete(blob.id)}>Delete</button>
-                        <Waveform blob={blob.blob} url={blob.url}/>
+                        <button onClick={() => handleDelete(blob.id)}
+                            className='bg-red-500 text-white px-3 py-1 rounded-xl'
+                            >
+                            Delete
+                        </button>
                     </li>
                 ))}
             </ul>

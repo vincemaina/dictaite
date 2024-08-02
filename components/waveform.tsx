@@ -1,4 +1,6 @@
-import { useEffect, useRef } from "react";
+'use client';
+
+import { useEffect, useRef, useState } from "react";
 
 const handleDrawWaveform = async (blob: Blob, canvas: HTMLCanvasElement) => {
     // @ts-ignore
@@ -81,18 +83,36 @@ export default function Waveform(props: WaveformProps) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.onplay = () => setIsPlaying(true);
+            audioRef.current.onpause = () => setIsPlaying(false);
+        }
+    }, []);
+
     useEffect(() => {
         if (canvasRef.current) {
             handleDrawWaveform(props.blob, canvasRef.current);
         }
     }, [props.blob]);
 
+    function handleTogglePlay() {
+        if (isPlaying) {
+            audioRef.current?.pause();
+        } else {
+            audioRef.current?.play();
+        }
+    }
+
     return (
         <div title="Voice note waveform"
-            onClick={() => audioRef.current?.play()}
+            onClick={handleTogglePlay}
         >
-            <canvas ref={canvasRef} width="600" height="50" />
+            <canvas ref={canvasRef} width="600" height="50" className="m-auto mb-5"/>
             <audio
+                className="hidden"
                 src={props.url}
                 controls
                 ref={audioRef}
