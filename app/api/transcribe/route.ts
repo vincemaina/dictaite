@@ -5,12 +5,6 @@ import path from 'path';
 
 export const dynamic = 'force-dynamic';
 
-export const config = {
-    api: {
-      bodyParser: false,
-    },
-};
-
 export async function POST(req: Request) {    
     try {
         const formData = await req.formData();
