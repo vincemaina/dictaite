@@ -204,7 +204,7 @@ export default function Recorder() {
             </div>
             
             <ul>
-                {audioUrls.map((blob) => (
+                {audioUrls.slice().reverse().map((blob) => (
                     <li key={blob.id} className='mt-10 bg-white p-7 rounded-lg shadow text-center text-balance'>
                         <Waveform blob={blob.blob} url={blob.url}/>
                         <p>{blob.transcription?.text}</p>
