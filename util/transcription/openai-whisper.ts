@@ -1,9 +1,5 @@
-const fs = require('fs');
-const OpenAI = require('openai');
-
-require('dotenv').config({
-    path: ['./.env', './.env.local']
-})
+import fs from "fs";
+import OpenAI from "openai";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -11,13 +7,15 @@ const openai = new OpenAI({
 
 /**
  * Transcribes an audio file using the OpenAI Whisper API
- * 
- * @param {string} path - The audio file to be transcribed
- * @returns {Object} - The transcription of the audio file 
  */
-async function main(path) {
+export default async function transcribe(filePath: string) {
+
+    if (!filePath.trim()) {
+        throw new Error("No file path provided");
+    }
+
     const transcription = await openai.audio.transcriptions.create({
-        file: fs.createReadStream(path),
+        file: fs.createReadStream(filePath),
         model: "whisper-1",
         response_format: "verbose_json",
         timestamp_granularities: ["segment"]
@@ -28,5 +26,3 @@ async function main(path) {
 
     return transcription;
 }
-
-module.exports = main;
