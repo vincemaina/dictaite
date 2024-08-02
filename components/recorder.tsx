@@ -190,10 +190,19 @@ export default function Recorder() {
 
     return (
         <div className='max-w-5xl'>
-            <button onClick={isRecording ? handleStopRecording : handleStartRecording} className='bg-red-500 text-white px-3 py-1 rounded-xl'>
-                {isRecording ? 'Stop' : 'Record'}
-            </button>
-            <canvas ref={canvasRef} width="600" height="100" />
+            <div className='flex  items-center justify-between'>
+                <h1 className='text-5xl'>
+                    dict<span className='text-red-700'>ai</span>te
+                </h1>
+
+                <div className='flex gap-3'>
+                    <button onClick={isRecording ? handleStopRecording : handleStartRecording} className='bg-red-500 text-white px-2 py-1 rounded-xl'>
+                        {isRecording ? 'Stop' : 'Record'}
+                    </button>
+                    <canvas ref={canvasRef} width="300" height="50" className='bg-stone-400 rounded-lg overflow-hidden' />
+                </div>
+            </div>
+            
             <ul>
                 {audioUrls.map((blob) => (
                     <li key={blob.id} className='mt-10 bg-white p-7 rounded-lg shadow text-center text-balance'>
