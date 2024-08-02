@@ -60,3 +60,251 @@ So as you can see, it's _sort of_ working, but there are a lot of mistakes.
 **Here is what I actually said:**
 
 > Okay, new idea - I want to build a voice note app where you can record your ideas and basically think out loud without having to worry about organising the voice notes yourself. So the app will use AI to organise all those voice notes into different folders. It will label them for you, it will transcribe them so that you can search through them later on - for example, you can just put in the search bar, um, whatever it is you're looking for and it can look through all those transcriptions and find the voice note that correlates to that. It'd be great if it could even find you the timestamp in that voice note where you talk about that thing. Um, what else could it do? I think it'd be quite helpful if it could sort of cluster voice notes that are about the same topic. If it could like cluster them together, so one way is that we just use like a labelling or tagging system um and then obviously if two voice notes have the same tag, then we know that they are related. And if you click on that tag, maybe it will show you all the voice notes that have that tag. Or the other option is it actually sorts them into visual folders, so you can just click on a folder for a specific topic and determine uh you can view all the voice notes that are about that topic.
+
+
+
+**OpenAI Whisper model's transcription:**
+
+> Okay, new idea. I want to build a voice note app where you can record your ideas and basically think out loud without having to worry about organizing the voice notes yourself. So the app will use AI to organize all those voice notes into different folders, it will label them for you, it will transcribe them so that you can search through them later on for example, you can just put in the search bar whatever it is you're looking for and it can look through all those transcriptions and find the voice note that correlates to that. It'd be great if it could even find you the timestamp in that voice note where you talk about that thing. What else could it do? I think it'd be quite helpful if it could sort of cluster voice notes that are about the same topic, if it could like cluster them together. So one way is that we just use like a labeling or tagging system and then obviously if two voice notes have the same tag we know that they're related and if you click on that tag maybe it will show you all the voice notes that have that tag. Or the other option is it actually sorts them into visual folders so you can just click on a folder for a specific topic and determine, you know you can view all the voice notes that are about that topic.
+
+
+**Verbose JSON transcription:**
+
+```json
+{
+  task: 'transcribe',
+  language: 'english',
+  duration: 79.80000305175781,
+  text: "Okay, new idea. I want to build a voice note app where you can record your ideas and basically think out loud without having to worry about organizing the voice notes yourself. So the app will use AI to organize all those voice notes into different folders, it will label them for you, it will transcribe them so that you can search through them later on for example, you can just put in the search bar whatever it is you're looking for and it can look through all those transcriptions and find the voice note that correlates to that. It'd be great if it could even find you the timestamp in that voice note where you talk about that thing. What else could it do? I think it'd be quite helpful if it could sort of cluster voice notes that are about the same topic, if it could like cluster them together. So one way is that we just use like a labeling or tagging system and then obviously if two voice notes have the same tag we know that they're related and if you click on that tag maybe it will show you all the voice notes that have that tag. Or the other option is it actually sorts them into visual folders so you can just click on a folder for a specific topic and determine, you know you can view all the voice notes that are about that topic.",
+  segments: [
+    {
+      id: 0,
+      seek: 0,
+      start: 0,
+      end: 3.2799999713897705,
+      text: ' Okay, new idea.',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.26797497272491455,
+      compression_ratio: 1.6714285612106323,
+      no_speech_prob: 0.13284489512443542
+    },
+    {
+      id: 1,
+      seek: 0,
+      start: 3.2799999713897705,
+      end: 8.800000190734863,
+      text: ' I want to build a voice note app where you can record your ideas and basically think',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.26797497272491455,
+      compression_ratio: 1.6714285612106323,
+      no_speech_prob: 0.13284489512443542
+    },
+    {
+      id: 2,
+      seek: 0,
+      start: 8.800000190734863,
+      end: 15.5600004196167,
+      text: ' out loud without having to worry about organizing the voice notes yourself.',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.26797497272491455,
+      compression_ratio: 1.6714285612106323,
+      no_speech_prob: 0.13284489512443542
+    },
+    {
+      id: 3,
+      seek: 0,
+      start: 15.5600004196167,
+      end: 20.799999237060547,
+      text: ' So the app will use AI to organize all those voice notes into different folders, it will',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.26797497272491455,
+      compression_ratio: 1.6714285612106323,
+      no_speech_prob: 0.13284489512443542
+    },
+    {
+      id: 4,
+      seek: 0,
+      start: 20.799999237060547,
+      end: 26,
+      text: ' label them for you, it will transcribe them so that you can search through them later',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.26797497272491455,
+      compression_ratio: 1.6714285612106323,
+      no_speech_prob: 0.13284489512443542
+    },
+    {
+      id: 5,
+      seek: 2600,
+      start: 26,
+      end: 31.040000915527344,
+      text: " on for example, you can just put in the search bar whatever it is you're looking for and",
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.2607172131538391,
+      compression_ratio: 1.765625,
+      no_speech_prob: 0.6888427734375
+    },
+    {
+      id: 6,
+      seek: 2600,
+      start: 31.040000915527344,
+      end: 36.36000061035156,
+      text: ' it can look through all those transcriptions and find the voice note that correlates to',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.2607172131538391,
+      compression_ratio: 1.765625,
+      no_speech_prob: 0.6888427734375
+    },
+    {
+      id: 7,
+      seek: 2600,
+      start: 36.36000061035156,
+      end: 37.36000061035156,
+      text: ' that.',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.2607172131538391,
+      compression_ratio: 1.765625,
+      no_speech_prob: 0.6888427734375
+    },
+    {
+      id: 8,
+      seek: 2600,
+      start: 37.36000061035156,
+      end: 40.36000061035156,
+      text: " It'd be great if it could even find you the timestamp in that voice note where you talk",
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.2607172131538391,
+      compression_ratio: 1.765625,
+      no_speech_prob: 0.6888427734375
+    },
+    {
+      id: 9,
+      seek: 2600,
+      start: 40.36000061035156,
+      end: 43.20000076293945,
+      text: ' about that thing.',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.2607172131538391,
+      compression_ratio: 1.765625,
+      no_speech_prob: 0.6888427734375
+    },
+    {
+      id: 10,
+      seek: 2600,
+      start: 43.20000076293945,
+      end: 44.20000076293945,
+      text: ' What else could it do?',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.2607172131538391,
+      compression_ratio: 1.765625,
+      no_speech_prob: 0.6888427734375
+    },
+    {
+      id: 11,
+      seek: 2600,
+      start: 44.20000076293945,
+      end: 49.119998931884766,
+      text: " I think it'd be quite helpful if it could sort of cluster voice notes that are about",
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.2607172131538391,
+      compression_ratio: 1.765625,
+      no_speech_prob: 0.6888427734375
+    },
+    {
+      id: 12,
+      seek: 2600,
+      start: 49.119998931884766,
+      end: 52.36000061035156,
+      text: ' the same topic, if it could like cluster them together.',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.2607172131538391,
+      compression_ratio: 1.765625,
+      no_speech_prob: 0.6888427734375
+    },
+    {
+      id: 13,
+      seek: 5236,
+      start: 52.36000061035156,
+      end: 58.2400016784668,
+      text: ' So one way is that we just use like a labeling or tagging system and then obviously if two',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.31418392062187195,
+      compression_ratio: 1.813008189201355,
+      no_speech_prob: 0.014949396252632141
+    },
+    {
+      id: 14,
+      seek: 5236,
+      start: 58.2400016784668,
+      end: 62.52000045776367,
+      text: " voice notes have the same tag we know that they're related and if you click on that tag",
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.31418392062187195,
+      compression_ratio: 1.813008189201355,
+      no_speech_prob: 0.014949396252632141
+    },
+    {
+      id: 15,
+      seek: 5236,
+      start: 62.52000045776367,
+      end: 65.72000122070312,
+      text: ' maybe it will show you all the voice notes that have that tag.',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.31418392062187195,
+      compression_ratio: 1.813008189201355,
+      no_speech_prob: 0.014949396252632141
+    },
+    {
+      id: 16,
+      seek: 5236,
+      start: 65.72000122070312,
+      end: 70.63999938964844,
+      text: ' Or the other option is it actually sorts them into visual folders so you can just click',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.31418392062187195,
+      compression_ratio: 1.813008189201355,
+      no_speech_prob: 0.014949396252632141
+    },
+    {
+      id: 17,
+      seek: 5236,
+      start: 70.63999938964844,
+      end: 78.19999694824219,
+      text: ' on a folder for a specific topic and determine, you know you can view all the voice notes',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.31418392062187195,
+      compression_ratio: 1.813008189201355,
+      no_speech_prob: 0.014949396252632141
+    },
+    {
+      id: 18,
+      seek: 5236,
+      start: 78.19999694824219,
+      end: 79.76000213623047,
+      text: ' that are about that topic.',
+      tokens: [Array],
+      temperature: 0,
+      avg_logprob: -0.31418392062187195,
+      compression_ratio: 1.813008189201355,
+      no_speech_prob: 0.014949396252632141
+    }
+  ]
+}
+```
