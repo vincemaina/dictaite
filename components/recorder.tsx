@@ -6,6 +6,7 @@ import Waveform from './waveform';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile } from '@ffmpeg/util';
 import { type OpenAITranscriptionObject } from '../util/transcription/openai-whisper';
+import Label from './label';
 
 const ffmpeg = new FFmpeg()
 
@@ -197,7 +198,11 @@ export default function Recorder() {
                 {audioUrls.map((blob) => (
                     <li key={blob.id} className='mt-10'>
                         <p>{blob.transcription?.text}</p>
-                        <p>{blob.keyPhrases}</p>
+                        
+                        <div className='flex flex-wrap gap-3'>{blob.keyPhrases?.map(phrase => (
+                            <Label key={phrase}>{phrase}</Label>
+                        ))}</div>
+                        
                         <button onClick={() => handleDelete(blob.id)}>Delete</button>
                         <Waveform blob={blob.blob} url={blob.url}/>
                     </li>
