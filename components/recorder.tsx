@@ -20,6 +20,7 @@ export default function Recorder() {
         keyPhrases?: string[];
         url: string;
     }[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
     const audioContextRef = useRef<AudioContext | null>(null);
@@ -113,6 +114,7 @@ export default function Recorder() {
         };
 
         mediaRecorderRef.current.onstop = async () => {
+            setIsLoading(true);
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
             if (audioBlob.size > 0) {
                 const compressedAudioBlob = await compressAudio(audioBlob);
@@ -145,6 +147,7 @@ export default function Recorder() {
                 console.error('Audio blob size is 0.');
             }
             audioChunksRef.current = [];
+            setIsLoading(false);
         };
 
         mediaRecorderRef.current.start();
@@ -202,6 +205,8 @@ export default function Recorder() {
                     <canvas ref={canvasRef} width="300" height="50" className='bg-stone-400 rounded-lg overflow-hidden' />
                 </div>
             </div>
+
+            {isLoading && <p className='text-center'>Loading...</p>}
             
             <ul>
                 {audioUrls.slice().reverse().map((blob) => (
