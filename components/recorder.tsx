@@ -126,12 +126,12 @@ export default function Recorder() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ text: transcription }),
+                    body: JSON.stringify({ text: transcription.text }),
                 }).then(res => res.json());
                 
                 const id = await saveAudioBlob(compressedAudioBlob, transcription, keyphrases);
                 const url = URL.createObjectURL(audioBlob);
-                setAudioUrls(prevUrls => [...prevUrls, { id, url, blob: audioBlob }]);
+                setAudioUrls(prevUrls => [...prevUrls, { id, url, transcription, keyPhrases: keyphrases, blob: audioBlob }]);
             } else {
                 console.error('Audio blob size is 0.');
             }
