@@ -124,13 +124,18 @@ export default function Recorder() {
                     body: formData,
                 }).then(res => res.json());
 
-                const keyphrases = await fetch('/api/keyphrases', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ text: transcription.text }),
-                }).then(res => res.json());
+                let keyphrases: string[] = [];
+                try {
+                    keyphrases = await fetch('/api/keyphrases', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ text: transcription.text }),
+                    }).then(res => res.json());
+                } catch (error) {
+                    console.error('Error fetching keyphrases:', error);
+                }
                 
                 const id = await saveAudioBlob(compressedAudioBlob, transcription, keyphrases);
                 const url = URL.createObjectURL(audioBlob);
