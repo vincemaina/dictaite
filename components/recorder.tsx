@@ -5,6 +5,7 @@ import { saveAudioBlob, getAllAudioBlobs, deleteAudioBlob } from '../util/indexe
 import Waveform from './waveform';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile } from '@ffmpeg/util';
+import { type OpenAITranscriptionObject } from '../util/transcription/openai-whisper';
 
 const ffmpeg = new FFmpeg()
 
@@ -14,7 +15,8 @@ export default function Recorder() {
     const [audioUrls, setAudioUrls] = useState<{
         id: any;
         blob: any;
-        transcription?: string | undefined;
+        transcription?: OpenAITranscriptionObject;
+        keyPhrases?: string[];
         url: string;
     }[]>([]);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -27,11 +29,12 @@ export default function Recorder() {
     useEffect(() => {
         async function fetchAudioBlobs() {
             const blobs = await getAllAudioBlobs();
-            const urls = blobs.map(({ id, blob, transcription }) => ({
-                id,
-                blob,
-                transcription,
-                url: URL.createObjectURL(blob),
+            const urls = blobs.map((blob) => ({
+                id: blob.id,
+                blob: blob.blob,
+                transcription: blob.transcription,
+                keyPhrases: blob.keyPhrases,
+                url: URL.createObjectURL(blob.blob),
             }));
             setAudioUrls(urls);
         }
@@ -186,11 +189,12 @@ export default function Recorder() {
             </button>
             <canvas ref={canvasRef} width="600" height="100" />
             <ul>
-                {audioUrls.map(({ id, url, blob, transcription }) => (
-                    <li key={id} className='mt-10'>
-                        <p>{transcription}</p>
-                        <button onClick={() => handleDelete(id)}>Delete</button>
-                        <Waveform blob={blob} url={url}/>
+                {audioUrls.map((blob) => (
+                    <li key={blob.id} className='mt-10'>
+                        <p>{blob.transcription?.text}</p>
+                        <p>{blob.keyPhrases}</p>
+                        <button onClick={() => handleDelete(blob.id)}>Delete</button>
+                        <Waveform blob={blob.blob} url={blob.url}/>
                     </li>
                 ))}
             </ul>
