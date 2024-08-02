@@ -9,9 +9,15 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-async function main() {
+/**
+ * Transcribes an audio file using the OpenAI Whisper API
+ * 
+ * @param {string} path - The audio file to be transcribed
+ * @returns {Object} - The transcription of the audio file 
+ */
+async function main(path) {
     const transcription = await openai.audio.transcriptions.create({
-        file: fs.createReadStream("./util/transcription/sample.mp3"),
+        file: fs.createReadStream(path),
         model: "whisper-1",
         response_format: "verbose_json",
         timestamp_granularities: ["segment"]
@@ -19,8 +25,8 @@ async function main() {
     });
 
     console.log(transcription);
-}
 
-main()
+    return transcription;
+}
 
 module.exports = main;
