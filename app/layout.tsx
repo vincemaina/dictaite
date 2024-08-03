@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import VoiceNote from "../components/voice-note";
+import VoiceNoteList from "../components/voice-note-list";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,9 +17,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={inter.className}>
-                <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <html lang="en" className="bg-neutral-800 text-white fixed inset-0">
+            <body className={`${inter.className} flex min-h-screen items-center`}>
+                <VoiceNoteList/>
+
+                <main className="flex-auto">
                     {children}
                 </main>
             </body>
