@@ -308,3 +308,7 @@ So as you can see, it's _sort of_ working, but there are a lot of mistakes.
   ]
 }
 ```
+
+### After some design changes
+
+![alt text](image-2.png)
