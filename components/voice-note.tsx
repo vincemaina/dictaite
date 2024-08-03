@@ -1,0 +1,43 @@
+import PlayIcon from "./icons/play";
+
+interface Props {
+    title: string;
+    date: Date;
+    seconds: number;
+    tags: string[];
+}
+
+export default function VoiceNote(props: Props) {
+
+    const minutes = Math.floor(props.seconds / 60);
+    const seconds = (props.seconds % 60).toFixed(0).padStart(2, "0");
+
+    return (
+        <div className="bg-stone-800 w-full p-4 py-3 rounded-lg shadow-sm shadow-black truncate">
+            <div className="flex gap-5 justify-between items-center truncate">
+                <div className="truncate">
+                    <h4 className="font-light text-sm text-white mb-1 truncate"
+                        title={props.title}
+                    >
+                        {props.title}
+                    </h4>
+                    <p className="text-xs text-neutral-400">{props.date.toDateString()}</p>
+                </div>
+
+                <button className="fill-white" title="Play">
+                    <PlayIcon/>
+                </button>
+            </div>
+
+            <div className="flex items-center gap-5 text-xs mt-1.5">
+                <div className="h-1  bg-neutral-600 relative rounded overflow-hidden flex-auto">
+                    <div className="absolute bg-gradient-to-r from-blue-600 to-fuchsia-400 inset-0 w-1/2 rounded-r">
+                        <div className="relative h-full aspect-square float-end bg-white rounded-full"/>
+                    </div>
+                </div>
+
+                <span className="text-neutral-400">{minutes}:{seconds}</span>
+            </div>
+        </div>
+    );
+}
