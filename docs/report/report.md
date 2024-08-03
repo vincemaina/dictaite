@@ -312,3 +312,20 @@ So as you can see, it's _sort of_ working, but there are a lot of mistakes.
 ### After some design changes
 
 ![alt text](image-2.png)
+
+
+### Researching other design apps
+
+There are countless voice recording apps for both desktop and mobile. So rather than trying to design my own from scratch, I decided to speed up the process, and base mine off an existing one.
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
+
+![alt text](image-5.png)
+
+![alt text](image-6.png)
+
+![alt text](image-7.png)
+
+The last was my favourite and decided to base mine on that.
