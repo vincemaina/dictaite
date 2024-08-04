@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default function Label(props: Props) {
-    return <span className='bg-blue-600 text-white p-0.5 px-1.5 text-xs font-medium rounded-lg'>
+    return <span className='bg-sky-800 text-white p-0.5 px-1.5 text-xs font-medium rounded-lg'>
         {props.children}
     </span>;
 }

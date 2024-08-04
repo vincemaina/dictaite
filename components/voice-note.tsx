@@ -16,7 +16,7 @@ export default function VoiceNote(props: Props) {
         <div className="bg-neutral-800 w-full p-3 rounded-lg border-b border-b-neutral-900 truncate">
             <div className="flex gap-5 justify-between items-center truncate">
                 <div className="truncate">
-                    <h4 className="font-light text-sm text-white mb-1 truncate"
+                    <h4 className="text-sm text-white mb-1 truncate"
                         title={props.title}
                     >
                         {props.title}
@@ -31,7 +31,7 @@ export default function VoiceNote(props: Props) {
 
             <div className="flex items-center gap-5 text-xs mt-1.5">
                 <div className="h-1  bg-neutral-900 relative rounded overflow-hidden flex-auto">
-                    <div className="absolute bg-gradient-to-r from-blue-600 to-fuchsia-400 inset-0 w-1/2 rounded-r">
+                    <div className="absolute bg-gradient-to-r from-sky-200 to-sky-800 inset-0 w-1/2 rounded-r">
                         <div className="relative h-full aspect-square float-end bg-white rounded-full"/>
                     </div>
                 </div>
