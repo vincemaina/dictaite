@@ -21,7 +21,7 @@ export default function RootLayout({
             <body className={`${inter.className} flex h-screen`}>
                 <VoiceNoteList/>
 
-                <main className="flex-auto p-24 overflow-y-scroll">
+                <main className="flex-auto p-20 overflow-y-scroll">
                     {children}
                 </main>
             </body>

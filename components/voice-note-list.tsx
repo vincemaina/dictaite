@@ -3,7 +3,7 @@ import VoiceNote from "./voice-note";
 
 export default function VoiceNoteList() {
     return (
-        <div className="h-screen w-[350px] sticky top-0 bg-neutral-950 px-6 py-8 flex flex-col">
+        <div className="h-screen w-[350px] sticky top-0 bg-neutral-950 bg-opacity-60 px-6 py-8 flex flex-col">
 
             <div className="fill-gray-300 flex gap-3 items-center mb-5 px-3">
                 <SearchIcon/>

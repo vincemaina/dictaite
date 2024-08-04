@@ -31,7 +31,7 @@ export default function VoiceNote(props: Props) {
 
             <div className="flex items-center gap-5 text-xs mt-1.5">
                 <div className="h-1  bg-neutral-900 relative rounded overflow-hidden flex-auto">
-                    <div className="absolute bg-gradient-to-r from-sky-200 to-sky-800 inset-0 w-1/2 rounded-r">
+                    <div className="absolute bg-gradient-to-r from-violet-400 to-blue-600 inset-0 w-1/2 rounded-r">
                         <div className="relative h-full aspect-square float-end bg-white rounded-full"/>
                     </div>
                 </div>
