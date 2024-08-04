@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import VoiceNote from "../components/voice-note";
-import VoiceNoteList from "../components/voice-note-list";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +16,8 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className="bg-neutral-100 dark:bg-neutral-900 dark:text-white fixed inset-0">
-            <body className={`${inter.className} flex h-screen`}>
-                <VoiceNoteList/>
-
-                <main className="flex-auto p-20 overflow-y-scroll">
-                    {children}
-                </main>
+            <body className={`${inter.className}`}>
+                {children}
             </body>
         </html>
     );
