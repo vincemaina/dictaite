@@ -13,10 +13,10 @@ export default function VoiceNote(props: Props) {
     const seconds = (props.seconds % 60).toFixed(0).padStart(2, "0");
 
     return (
-        <div className="bg-neutral-800 w-full p-3 rounded-lg border-b border-b-neutral-900 truncate">
+        <div className="bg-neutral-100 dark:bg-neutral-800 w-full p-3 rounded-lg border-b border-b-neutral-900 truncate">
             <div className="flex gap-5 justify-between items-center truncate">
                 <div className="truncate">
-                    <h4 className="text-sm text-white mb-1 truncate"
+                    <h4 className="text-sm dark:text-white mb-1 truncate"
                         title={props.title}
                     >
                         {props.title}

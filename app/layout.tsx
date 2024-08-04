@@ -17,7 +17,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className="bg-neutral-900 text-white fixed inset-0">
+        <html lang="en" className="bg-neutral-100 dark:bg-neutral-900 dark:text-white fixed inset-0">
             <body className={`${inter.className} flex h-screen`}>
                 <VoiceNoteList/>
 
