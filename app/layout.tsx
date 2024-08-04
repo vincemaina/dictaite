@@ -17,11 +17,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className="bg-neutral-800 text-white fixed inset-0">
-            <body className={`${inter.className} flex min-h-screen items-center`}>
+        <html lang="en" className="bg-neutral-900 text-white fixed inset-0">
+            <body className={`${inter.className} flex h-screen`}>
                 <VoiceNoteList/>
 
-                <main className="flex-auto">
+                <main className="flex-auto p-24 overflow-y-scroll">
                     {children}
                 </main>
             </body>
