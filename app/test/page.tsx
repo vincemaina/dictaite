@@ -9,7 +9,7 @@ export default function Page() {
             <div className="mb-7 flex items-center gap-4">
                 <img src="https://i.pravatar.cc/150?img=2" alt="Image of person" className="h-10 aspect-square object-cover rounded-full"/>
                 <div>
-                    <h3 className="text-sm text-white font-medium">John Doe</h3>
+                    <h3 className="text-sm text-white font-medium mb-px">John Doe</h3>
                     <p className="text-xs text-neutral-400">
                         {new Date().toDateString()}, {new Date().toLocaleTimeString("en-US", {hour: "numeric", minute: "numeric"})}
                     </p>
@@ -58,10 +58,10 @@ export default function Page() {
                 <div className="w-full max-w-sm bg-neutral-800 p-7 rounded-xl text-sm">
                     <h4 className="font-medium text-base mb-7">Key points</h4>
                     <ul className="list-outside ml-4 list-disc space-y-4 font-light text-neutral-400">
-                        <li className="list-item">Testing a new and improved <span className="text-violet-200">dictation</span> app.</li>
+                        <li className="list-item">Testing a new and improved <span className="text-blue-200">dictation</span> app.</li>
                         <li className="list-item">The app allows recording of voice notes to jot down thoughts.</li>
                         <li className="list-item">Users can speak their project ideas out loud.</li>
-                        <li className="list-item">The app <span className="text-violet-200">uses AI</span> to transcribe the voice notes.</li>
+                        <li className="list-item">The app <span className="text-blue-200">uses AI</span> to transcribe the voice notes.</li>
                         <li className="list-item">It picks out key phrases and labels them.</li>
                         <li className="list-item">The app organizes the notes for the user.</li>
                     </ul>
