@@ -1,10 +1,11 @@
 import PencilIcon from "../../../../components/icons/pencil";
 import TrashIcon from "../../../../components/icons/trash";
 import Label from "../../../../components/label";
+import Transcription from "../../../../components/transcription";
 
 export default function Page() {
     return (
-        <div className="max-w-[1000px] mx-auto">
+        <div className="max-w-[1100px] mx-auto">
             <div className="mb-7 flex items-center gap-4">
                 <img src="https://i.pravatar.cc/150?img=2" alt="Image of person" className="h-10 aspect-square object-cover rounded-full"/>
                 <div>
@@ -34,22 +35,58 @@ export default function Page() {
                 </div>
             </div>
             <div className="flex gap-16 mt-12">
-                <div className="w-full relative">
-                    <div className="bg-gradient-to-b from-transparent to-neutral-100 dark:to-neutral-900 absolute inset-0 z-10"></div>
-                    {/* <h4 className="mb-7">Transcription</h4> */}
-                    <p style={{lineHeight: "1.5"}} className="text-xl text-neutral-800 dark:text-neutral-200 font-light">
-                        <span className="opacity-60 dark:text-blue-200">I&apos;m now testing out my new and improved version of this dictation app.</span>
-                        <span className="dark:text-white"> The idea is that you can record voice notes and just jot down your thoughts.</span>
-                        <span className="opacity-30"> For example, if you have an idea for a project, you can just talk it out loud. And then what the app will do is it will use AI to transcribe your voice note, and then to pick out key phrases and to label it and organize it for you so that you don&apos;t have to worry about it.</span>
-                        <br />
-                        <br />
-                        <span className="mt-7 opacity-30">
-                            I&apos;m now testing out my new and improved version of this dictation app.
-                            The idea is that you can record voice notes and just jot down your thoughts.
-                            For example, if you have an idea for a project, you can just talk it out loud. And then what the app will do is it will use AI to transcribe your voice note, and then to pick out key phrases and to label it and organize it for you so that you don&apos;t have to worry about it.
-                        </span>
-                    </p>
-                </div>
+                <Transcription
+                    lines={{
+                        1: {
+                            text: "I'm now testing out my new and improved version of this dictation app.",
+                            start: 0,
+                            end: 5,
+                            speaker: "User"
+                        },
+                        2: {
+                            text: "The idea is that you can record voice notes and just jot down your thoughts.",
+                            start: 5,
+                            end: 10,
+                            speaker: "User"
+                        },
+                        3: {
+                            text: "For example, if you have an idea for a project, you can just talk it out loud.",
+                            start: 10,
+                            end: 15,
+                            speaker: "User"
+                        },
+                        4: {
+                            text: "And then what the app will do is it will use AI to transcribe your voice note, and then to pick out key phrases and to label it and organize it for you so that you don't have to worry about it.",
+                            start: 15,
+                            end: 20,
+                            speaker: "User"
+                        },
+                        5: {
+                            text: "\n\nI'm now testing out my new and improved version of this dictation app.",
+                            start: 0,
+                            end: 5,
+                            speaker: "User"
+                        },
+                        6: {
+                            text: "The idea is that you can record voice notes and just jot down your thoughts.",
+                            start: 5,
+                            end: 10,
+                            speaker: "User"
+                        },
+                        7: {
+                            text: "For example, if you have an idea for a project, you can just talk it out loud.",
+                            start: 10,
+                            end: 15,
+                            speaker: "User"
+                        },
+                        8: {
+                            text: "And then what the app will do is it will use AI to transcribe your voice note, and then to pick out key phrases and to label it and organize it for you so that you don't have to worry about it.",
+                            start: 15,
+                            end: 20,
+                            speaker: "User"
+                        },
+                    }}
+                />
 
                 <div className="w-full max-w-sm bg-neutral-200 dark:bg-neutral-800 p-7 rounded-xl text-sm">
                     <h4 className="font-medium text-base mb-7">Key points</h4>
